@@ -7,7 +7,7 @@ const Navbar = () => {
       <nav>
         <div className='nav-wrapper blue darken-1'>
           <Link to='/' className='brand-logo left'>
-            ROCXET
+            My Logo
           </Link>
           <ul id='nav-mobile' className='right'>
             <li>
