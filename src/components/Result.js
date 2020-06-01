@@ -1,27 +1,49 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 
 // to-do
 // ga auto masuk kudu refresh 3x
 
 const Alerts = () => {
+  const [alert, setAlert] = useState([]);
   Axios.get(
     'http://localhost:8080/JSON/alert/view/alerts/?baseurl=' +
       localStorage.getItem('URL')
-  ).then((response) => {
-    console.log(response.data.alerts);
-    // map alert array here
-  });
+  )
+    .then((response) => {
+      //   console.log('alert:' + response.data.alerts);
+      setAlert(response.data.alerts);
+      console.log(alert);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   return (
     <div>
       <h2>ALERT</h2>
-      {}
+      {alert.map((alert, index) => {
+        return (
+          <div className='card'>
+            <div className='card-title'>{alert.name}</div>
+            <div className='card-content'>{alert.description}</div>
+          </div>
+        );
+      })}
     </div>
   );
 };
 
 const Result = () => {
   const [statusB, setStatusB] = useState('');
+
+  // useEffect(() => {
+  //   Axios.get(
+  //     'http://localhost:8080/JSON/alert/view/alerts/?baseurl=' +
+  //       localStorage.getItem('URL')
+  //   ).then ((response) => {
+  //       console.log(response)
+  //   }, [])
+
   const checkStatus = () => {
     Axios.get(
       'http://localhost:8080/JSON/ascan/view/status/?scanId=' +
