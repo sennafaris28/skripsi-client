@@ -1,27 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Axios from 'axios';
-
-// to-do
-// ga auto masuk kudu refresh 3x
+import { useHistory } from 'react-router-dom';
 
 const Alerts = () => {
-  Axios.get(
-    'http://localhost:8080/JSON/alert/view/alerts/?baseurl=' +
-      localStorage.getItem('URL')
-  ).then((response) => {
-    console.log(response.data.alerts);
-    // map alert array here
-  });
   return (
     <div>
       <h2>ALERT</h2>
-      {}
     </div>
   );
 };
 
 const Result = () => {
-  const [statusB, setStatusB] = useState('');
+  const history = useHistory();
   const checkStatus = () => {
     Axios.get(
       'http://localhost:8080/JSON/ascan/view/status/?scanId=' +
@@ -36,12 +26,9 @@ const Result = () => {
         localStorage.setItem('status', response);
         console.log(response.data.status);
         const status = response.data.status;
-        console.log(status);
         if (status == 100) {
-          setStatusB(response.data.status);
           console.log('done');
-
-          console.log(statusB);
+          history.push('/result');
         } else {
           return (
             <div>
@@ -58,7 +45,6 @@ const Result = () => {
       <h2 className='card-title'>Result Page</h2>
       <div className='card-content'>
         <p>Konten</p>
-        {statusB ? <Alerts /> : <div>Loading</div>}
         <button className='btn' onClick={() => checkStatus()}>
           Refresh
         </button>

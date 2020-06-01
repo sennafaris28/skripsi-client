@@ -10,14 +10,15 @@ const Attack = () => {
     console.log(url);
     localStorage.setItem('URL', url);
     Axios.all([
-      Axios.get('/JSON/spider/action/scan/?url=' + url),
-      Axios.get('/JSON/ascan/action/scan/?url=' + url),
+      Axios.get('http://localhost:8080/JSON/spider/action/scan/?url=' + url),
+      Axios.get('http://localhost:8080/JSON/ascan/action/scan/?url=' + url),
     ])
       .then((responseArr) => {
         console.log('Spider :', responseArr[0]);
         console.log('Active :', responseArr[1]);
         console.log(responseArr[0].data.scan);
         localStorage.setItem('SCAN_ID', responseArr[0].data.scan);
+        localStorage.setItem('URL', url);
         history.push('/result');
       })
       .catch((errors) => {
