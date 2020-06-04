@@ -9,20 +9,28 @@ const Attack = () => {
   const postData = () => {
     console.log(url);
     localStorage.setItem('URL', url);
-    Axios.all([
-      Axios.get('http://localhost:8080/JSON/spider/action/scan/?url=' + url),
-      Axios.get('http://localhost:8080/JSON/ascan/action/scan/?url=' + url),
-    ])
-      .then((responseArr) => {
-        console.log('Spider :', responseArr[0]);
-        console.log('Active :', responseArr[1]);
-        console.log(responseArr[0].data.scan);
-        localStorage.setItem('SCAN_ID', responseArr[0].data.scan);
-        localStorage.setItem('URL', url);
-        history.push('/result');
+    Axios.get('http://localhost:8080/JSON/spider/action/scan/?url=' + url)
+      .then((response) => {
+        console.log('Spider :', response);
+        console.log(response.data.scan);
+        setTimeout(aScan(), 3000);
       })
       .catch((errors) => {
         console.log(errors);
+      });
+  };
+
+  const aScan = () => {
+    Axios.get('http://localhost:8080/JSON/ascan/action/scan/?url=' + url)
+      .then((response) => {
+        console.log('Active :', response);
+        localStorage.setItem('SCAN_ID', response.data.scan);
+        localStorage.setItem('URL', url);
+        // history.push('/result');
+        history.push('/loading');
+      })
+      .catch((error) => {
+        console.log(error);
       });
   };
 
